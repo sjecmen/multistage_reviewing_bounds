@@ -7,13 +7,15 @@ from bounds import *
 Plots bounds for both the 2 round and 1 round in-expectation bounds. Uses input from the scale_up_assignment, scale_up_assignment_without_21, and get_expected_split_value files if available. 
 '''
 
-fname = 'DA1'
+fname = 'iclr2018'
 
 if fname == 'all_ones':
     nk = 1000
     n = 1000
-    vs = [1 for k in range(1, nk+1)]
-    vs_without = [1 for k in range(1, nk+1)]
+    ks1 = list(range(1, nk+1))
+    ks2 = ks1
+    vs = [1 for k in ks1]
+    vs_without = [1 for k in ks2]
     rand_value = 1
     value_21 = 1
 else:
@@ -63,7 +65,7 @@ print('best approx at', i, 'with fraction', "{:.4f}".format(bd/rand_value))
 
 
 # do plot
-ks = ks1 if ks1.size > ks2.size else ks2
+ks = ks1 if len(ks1) > len(ks2) else ks2
 
 plt.plot(ks2, vs_without, label='mean (2k, k) value without assignments in (2, 1)')
 plt.plot(ks1, vs, label='mean (2k, k) value', color='lightblue')

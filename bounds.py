@@ -53,7 +53,7 @@ def p_two_round_opt(k):
 
 # gaussian approximation assuming l=k/4
 def approx_two_round(ks):
-    return 1 - ( (np.sqrt(12) + np.sqrt(7)) / (2 * np.sqrt(np.asarray(ks) * np.pi)) )
+    return 1 - ( (np.sqrt(6) + np.sqrt(7)) / (2 * np.sqrt(np.asarray(ks) * np.pi)) )
 
 # value_21: value of the optimum (2, 1) assignment
 # vs_without: value of the (2k, k) assignment without the opt (2, 1)
