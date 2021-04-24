@@ -7,7 +7,7 @@ from bounds import *
 Plots bounds for both the 2 round and 1 round in-expectation bounds. Uses input from the scale_up_assignment, scale_up_assignment_without_21, and get_expected_split_value files if available. 
 '''
 
-fname = 'iclr2018'
+fname = 'iclr_top10'
 
 if fname == 'all_ones':
     nk = 1000
@@ -53,6 +53,7 @@ bounds1 = one_round_bounds(ks1, vs)
 approx1 = approx_one_round_bounds(ks1, vs)
 
 # print out stats for 2 round version
+'''
 print("2 round bound:")
 print('k', '\tfraction')
 nkk = min(15, len(bounds2))
@@ -62,6 +63,7 @@ bd, i = max(zip(bounds2, ks2))
 print('best bound at', i, 'with fraction', "{:.4f}".format(bd /rand_value))
 bd, i = max(zip(approx2, ks2))
 print('best approx at', i, 'with fraction', "{:.4f}".format(bd/rand_value))
+'''
 
 
 # do plot

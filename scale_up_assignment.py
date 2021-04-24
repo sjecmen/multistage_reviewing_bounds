@@ -7,7 +7,7 @@ Gets the value of the optimal (2k, k) assignment and saves it.
 '''
 
 fname = 'iclr2018'
-nk = 100
+nk = 20
 
 S, M = load_sims(fname)
 
