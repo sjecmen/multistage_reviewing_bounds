@@ -1,1 +1,3 @@
 *.png
+scale_up*.npz
+expected_split*.npz

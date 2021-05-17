@@ -5,9 +5,10 @@ from bounds import *
 
 ''' 
 Plots bounds for both the 2 round and 1 round in-expectation bounds. Uses input from the scale_up_assignment, scale_up_assignment_without_21, and get_expected_split_value files if available. 
+Assumes c=1 for both.
 '''
 
-fname = 'iclr_top10'
+fname = 'iclr2018'
 
 if fname == 'all_ones':
     nk = 1000
@@ -46,24 +47,11 @@ else:
         rand_value = 0
 
 # construct bounds
-bounds2 = two_round_bounds(ks2, value_21, vs_without)
-approx2 = approx_two_round_bounds(ks2, value_21, vs_without)
+bounds2 = two_round_bounds(ks2, value_21, vs_without, True)
+approx2 = two_round_bounds(ks2, value_21, vs_without, False)
 
-bounds1 = one_round_bounds(ks1, vs)
-approx1 = approx_one_round_bounds(ks1, vs)
-
-# print out stats for 2 round version
-'''
-print("2 round bound:")
-print('k', '\tfraction')
-nkk = min(15, len(bounds2))
-for k in range(1, nkk+1):
-    print(k, "\t{:.4f}".format(bounds2[k-1]/rand_value))
-bd, i = max(zip(bounds2, ks2))
-print('best bound at', i, 'with fraction', "{:.4f}".format(bd /rand_value))
-bd, i = max(zip(approx2, ks2))
-print('best approx at', i, 'with fraction', "{:.4f}".format(bd/rand_value))
-'''
+bounds1 = one_round_bounds(ks1, vs, 1, True)
+approx1 = one_round_bounds(ks1, vs, 1, False)
 
 
 # do plot

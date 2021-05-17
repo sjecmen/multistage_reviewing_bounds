@@ -1,73 +1,68 @@
 import numpy as np
 import scipy.special
 from scipy.stats import binom
+from scipy.stats import norm
 
 '''
 contains functions for calculating the binomial expectations used in results
 '''
 
-# calculate the expectation of min(X/l, 1)
-def fraction(num, k, p, l):
-    x = np.arange(0, num + 1)
-    return np.sum(binom.pmf(x, num, p) * np.minimum(x/l, 1))
+# calculate the expectation of min(X/l, 1), X ~ Binom(n, p)
+def fraction(n, p, l):
+    x = np.arange(0, n + 1)
+    return np.sum(binom.pmf(x, n, p) * np.minimum(x/l, 1))
 
-# p_{kl} in the (2k, k) bound
-def p_one_round(k):
-    return fraction(2*k, k, 1/2, k)
+# calculate the gaussian approx to the above frac
+# quite precise, uses gaussian cdf but not pdf
+def fraction_approx(n, p, l):
+    q = 1 - p
+    t1 = np.sqrt(q / (2 * np.pi * n * p))
+    if q > 0 and p > 0:
+        F = norm.cdf(l, n * p, np.sqrt(n * p * q))
+    else:
+        F = float(n * p <= l)
+    t2 = F * (1 - ((n * p) / l))
+    return 1 - t1 - t2
 
-# gaussian approximation to p
-def approx_one_round(ks):
-    return 1 - ( 1 / (2 * np.sqrt(np.asarray(ks) * np.pi)) )
+# proportion of value in the one-round version
+# exact: whether exact binomial or gaussian approx is used
+def p_one_round(k, c, exact):
+    if exact:
+        f = fraction
+    else:
+        f = fraction_approx
+    e1 = f(np.floor((1+c) * k), 1 / (1+c), k)
+    e2 = f(np.floor((1+c) * k), c / (1+c), np.ceil(c * k))
+    e3 = f(k, c, np.ceil(c * k))
+    t = c * (e2 + e3 - 1)
+    return (k / np.ceil((1 + c) * k)) * (e1 + t) 
 
-# vs: value of the opt (2k, k) assignment
-def one_round_bounds(ks, vs):
+# vs: value of the opt ((1+c)k, k) assignment
+def one_round_bounds(ks, vs, c, exact=False):
     bds = []
     for k, v in zip(ks, vs):
-        bd = v * p_one_round(k)
+        bd = v * p_one_round(k, c, exact)
         bds.append(bd)
     return bds
 
-def approx_one_round_bounds(ks, vs):
-    ps = approx_one_round(ks)
-    bds = ps * np.asarray(vs)
-    return bds
-
-# p_{kl} for the 2 round bound
-def p_two_round_base(k, l):
-    paper_frac = fraction(2*k, k, 1/8, l)
-    reviewer_frac = fraction(k, k, 1/4, l)
-    return paper_frac + reviewer_frac - (k/(4*l))
-
-# use l=k/4
-def p_two_round(k):
-    l = np.floor(k/4) + 1#np.ceil(k/4)
-    return p_two_round_base(k, l)
-
-# optimize l
-def p_two_round_opt(k):
-    vs = []
-    for l in range(1, k+1):
-        v = p_two_round_base(k, l)
-        vs.append(v)
-    return max(vs)
-
-# gaussian approximation assuming l=k/4
-def approx_two_round(ks):
-    return 1 - ( (np.sqrt(6) + np.sqrt(7)) / (2 * np.sqrt(np.asarray(ks) * np.pi)) )
+# proportion of value for the 2 round bound
+def p_two_round(k, exact):
+    if exact:
+        f = fraction
+    else:
+        f = fraction_approx
+    l = np.ceil(k/4) # theory uses ceil(k/4), optimal is floor(k/4)+1
+    e1 = f(2*k, 1/8, l)
+    e2 = f(k, 1/4, l)
+    return e1 + e2 - ((k/4)/l)
 
 # value_21: value of the optimum (2, 1) assignment
 # vs_without: value of the (2k, k) assignment without the opt (2, 1)
-def two_round_bounds(ks, value_21, vs_without):
+def two_round_bounds(ks, value_21, vs_without, exact=False):
     bds = []
     for k, v_without in zip(ks, vs_without):
-        p = p_two_round(k)
+        p = p_two_round(k, exact)
         bd = (0.75 * value_21) + ((p/4) * v_without)
         bds.append(bd)
     return bds
-
-def approx_two_round_bounds(ks, value_21, vs_without):
-    ps = approx_two_round(ks)
-    bds = (0.75 * value_21) + ((ps/4) * np.asarray(vs_without))
-    return bds
-
 
