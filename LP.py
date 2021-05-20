@@ -96,6 +96,43 @@ def split_assignment(S, M, k, l):
 
     return x1 + x2, A
 
+# sample cn of the n papers
+def sample_second_stage_papers(n, c):
+    return rng.choice(n, int(c * n), replace=False)
+
+
+# calculate the optimal value for a given stage 2 paper set
+def opt_assignment_with_papers(S, M, revload, papload, P2):
+    c = len(P2) / S.shape[1]   
+    opt_paper_loads = np.full((S.shape[1]), papload)
+    for p in P2:
+        opt_paper_loads[p] += papload
+
+    opt_val, _ = match(S, M, revload, opt_paper_loads)
+    return opt_val
+
+
+# sample the random split value for a given stage 2 paper set
+def split_assignment_with_papers(S, M, revload, papload, P2):
+    # revload and papload IN EACH STAGE
+    c = len(P2) / S.shape[1]
+
+    revs = list(range(S.shape[0]))
+    rng.shuffle(revs) 
+    splitrev = int(S.shape[0] / (1+c))
+    R1 = revs[:splitrev]
+    R2 = revs[splitrev:]
+
+    S1 = S[R1, :]
+    S2 = S[R2, :][:, P2]
+    M1 = M[R1, :]
+    M2 = M[R2, :][:, P2]
+    x1,_ = match(S1, M1, revload, papload)
+    x2,_ = match(S2, M2, revload, papload)
+    return x1 + x2
+
+
+# randomly remove excess reviewers
 def random_restrict(S, M, revload, papload):
     # remove random extra reviewers first
     # want #paps * papload * 2 = #revs * revload
