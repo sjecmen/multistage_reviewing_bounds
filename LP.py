@@ -68,33 +68,12 @@ def comp_value(S, A):
             v += S[i, j] * A[i][j]
     return v
 
-def split_assignment(S, M, k, l):
-    # k is the revload, l is papload IN EACH STAGE (probably 1, 1)
-    revs = list(range(S.shape[0]))
-    rng.shuffle(revs) 
-    halfrevs = int(S.shape[0] / 2)
-    R1 = revs[:halfrevs]
-    R2 = revs[halfrevs:]
-    S1 = S[R1, :]
-    S2 = S[R2, :]
-    M1 = M[R1, :]
-    M2 = M[R2, :]
-    x1,A1 = match(S1, M1, np.full((S1.shape[0]), k), np.full((S1.shape[1]), l))
-    x2,A2 = match(S2, M2, np.full((S2.shape[0]), k), np.full((S2.shape[1]), l))
-
-    A = [[None for j in range(S.shape[1])] for i in range(S.shape[0])]
-    # if A1[i][j] then R1[i] is assigned to j
-    for i in range(halfrevs):
-        for j in range(S.shape[1]):
-            A[R1[i]][j] = A1[i][j]
-    for i in range(S.shape[0] - halfrevs):
-        for j in range(S.shape[1]):
-            A[R2[i]][j] = A2[i][j]
-    for i in range(S.shape[0]):
-        for j in range(S.shape[1]):
-            assert A[i][j] != None
-
-    return x1 + x2, A
+def split_assignment(S, M, revload, papload, c):
+    # k is the revload, l is papload IN EACH STAGE
+    P2 = sample_second_stage_papers(S.shape[1], c)
+    x_opt = opt_assignment_with_papers(S, M, revload, papload, P2)
+    x_split = split_assignment_with_papers(S, M, revload, papload, P2)
+    return x_split, x_opt
 
 # sample cn of the n papers
 def sample_second_stage_papers(n, c):
