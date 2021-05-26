@@ -4,22 +4,26 @@ from load_sims import *
 
 '''
 Estimates the expected value of random split with 1 review on each paper in each stage (with reviewer loads scaled up if necessary) and saves data.
+Does not use COIs.
 '''
 
-fname = 'iclr2018'
+fname = 'DA1'
 
-S, M = load_sims(fname)
-papload = 1
-nreviews = 2 * S.shape[1] * papload
-revload = int(np.ceil(nreviews / S.shape[0]))
+S, M = load_sims('datasets/'+fname)
+print(S.shape)
+S, revscale = scale_reviewers(S)
+M = np.zeros_like(S)
 
+print(S.shape, revscale)
+nreviews = 2 * S.shape[1]
+
+samples = []
 T = 10
-t = 0
 for i in range(T):
-    v, _ = split_assignment(S, M, revload, papload)
-    print(v)
-    t += v
-t /= T
-a = t / nreviews
-print(a)
-np.savez('expected_split_'+fname+'.npz', total_value=t, average_value=a, revload=revload, papload=papload)
+    v, _ = split_assignment(S, M, 1, 1, 1, False)
+    a = v / nreviews
+    print(a)
+    samples.append(a)
+avg_val = np.mean(a)
+print('mean:', avg_val)
+np.savez('expected_split_'+fname+'.npz', average_value=avg_val, revload=1, papload=1, samples=samples, revscale=revscale)

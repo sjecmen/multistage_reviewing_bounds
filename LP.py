@@ -68,10 +68,14 @@ def comp_value(S, A):
             v += S[i, j] * A[i][j]
     return v
 
-def split_assignment(S, M, revload, papload, c):
+# only calculate opt if true
+def split_assignment(S, M, revload, papload, c, opt=True):
     # k is the revload, l is papload IN EACH STAGE
     P2 = sample_second_stage_papers(S.shape[1], c)
-    x_opt = opt_assignment_with_papers(S, M, revload, papload, P2)
+    if opt:
+        x_opt = opt_assignment_with_papers(S, M, revload, papload, P2)
+    else:
+        x_opt = None
     x_split = split_assignment_with_papers(S, M, revload, papload, P2)
     return x_split, x_opt
 
@@ -82,7 +86,6 @@ def sample_second_stage_papers(n, c):
 
 # calculate the optimal value for a given stage 2 paper set
 def opt_assignment_with_papers(S, M, revload, papload, P2):
-    c = len(P2) / S.shape[1]   
     opt_paper_loads = np.full((S.shape[1]), papload)
     for p in P2:
         opt_paper_loads[p] += papload
