@@ -7,9 +7,9 @@ from itertools import product
 Run some tests and plot results of the values of p against their approximatinos.
 '''
 
-nk = 100#int(1e5)
+nk = 100#int(1e4)
 ks = list(range(1, nk+1))
-nc = 100
+nc = 10
 cs = [i/nc for i in range(1, nc+1)]
 
 # verify that approximation is LB
@@ -42,29 +42,29 @@ for i in range(nk):
         print('2 round; k:', k)
         print('exact:', exact_two[i])
         print('approx:', approx_two[i])
-    if k % 1000 == 0:
+    if k % 100 == 0:
         print(k)
 assert(np.all(exact_two >= approx_two))
 
-'''
-approx2 = approx_two_round(ks)
-approx2 = np.maximum(0, approx2)
 ps2 = []
+approx2 = []
 print('2 round')
-max_c = 0
 for k in ks:
-    p = p_two_round(k)
+    p = p_two_round(k, True)
+    ap = p_two_round(k, False)
     ps2.append(p)
-print('num actual below approx', np.sum(np.asarray(ps2) < approx2))
+    approx2.append(max(ap, 0))
+print('num actual below approx', np.sum(np.asarray(ps2) < np.asarray(approx2)))
 
-approx1 = approx_one_round(ks)
 ps1 = []
+approx1 = []
 print('1 round')
-max_c = 0
 for k in ks:
-    p = p_one_round(k)
+    p = p_one_round(k, 1, True)
+    ap = p_one_round(k, 1, False)
     ps1.append(p)
-print('num actual below approx', np.sum(np.asarray(ps1) < approx1))
+    approx1.append(ap)
+print('num actual below approx', np.sum(np.asarray(ps1) < np.asarray(approx1)))
 
 
 plt.plot(ks, ps2, label='actual, 2 round')
@@ -75,4 +75,3 @@ plt.title('p with gaussian approximations')
 plt.legend()
 plt.savefig('p_test.png')
 plt.show()
-'''

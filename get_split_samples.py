@@ -6,14 +6,18 @@ from load_sims import *
 Runs the main experiment by saving the value of several trials of random split against the optimal
 '''
 
-fname = 'query'
+fname = 'DA2'
 
 S, M = load_sims('datasets/' + fname)
 revs, paps = S.shape
 
 # for both stages:
 papload = 2
-revload = 6
+revload = 6 
+if fname == 'preflib2':
+    revload = 12
+if fname == 'DA2':
+    revload = 12
 T = 10
 cs = [0.1, 0.3, 0.5]
 opt_data = {c:[] for c in cs}

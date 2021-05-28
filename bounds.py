@@ -38,7 +38,7 @@ def p_one_round(k, c, exact):
     return (k / np.ceil((1 + c) * k)) * (e1 + t) 
 
 # vs: value of the opt ((1+c)k, k) assignment
-def one_round_bounds(ks, vs, c, exact=False):
+def one_round_bounds(ks, vs, c, exact):
     bds = []
     for k, v in zip(ks, vs):
         bd = v * p_one_round(k, c, exact)
@@ -58,7 +58,7 @@ def p_two_round(k, exact):
 
 # value_21: value of the optimum (2, 1) assignment
 # vs_without: value of the (2k, k) assignment without the opt (2, 1)
-def two_round_bounds(ks, value_21, vs_without, exact=False):
+def two_round_bounds(ks, value_21, vs_without, exact):
     bds = []
     for k, v_without in zip(ks, vs_without):
         p = p_two_round(k, exact)

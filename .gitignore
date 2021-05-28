@@ -1,3 +1,5 @@
 *.png
 scale_up*.npz
 expected_split*.npz
+split_samples*.npz
+*.pdf
