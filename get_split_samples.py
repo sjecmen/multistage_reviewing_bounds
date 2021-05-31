@@ -3,10 +3,10 @@ from LP import *
 from load_sims import *
 
 '''
-Runs the main experiment by saving the value of several trials of random split against the optimal
+Samples several random stage-two paper sets, and calculates value of a sample of random reviewer split and the ex-post optimum value for each.
 '''
 
-fname = 'DA2'
+fname = 'iclr2018'
 
 S, M = load_sims('datasets/' + fname)
 revs, paps = S.shape

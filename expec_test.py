@@ -4,7 +4,7 @@ from bounds import *
 from itertools import product
 
 '''
-Run some tests and plot results of the values of p against their approximatinos.
+Checks that the normal approximations to the binomial expectations are lower bounds.
 '''
 
 nk = 100#int(1e4)
@@ -12,8 +12,7 @@ ks = list(range(1, nk+1))
 nc = 10
 cs = [i/nc for i in range(1, nc+1)]
 
-# verify that approximation is LB
-# VERIFIED for k <= 25000, nc=100
+# LB verified for k <= 25000, nc=100
 exact_one = np.zeros((nk, nc))
 approx_one = np.zeros((nk, nc))
 print('1 round')
@@ -30,7 +29,7 @@ for i, j in product(range(nk), range(nc)):
         print(k)
 assert(np.all(exact_one >= approx_one))
 
-# VERIFIED for k <= 100000
+# LB verified for k <= 100000
 exact_two = np.zeros((nk))
 approx_two = np.zeros((nk))
 print('2 round')
@@ -71,7 +70,7 @@ plt.plot(ks, ps2, label='actual, 2 round')
 plt.plot(ks, approx2, label='approx, 2 round')
 plt.plot(ks, ps1, label='actual, 1 round')
 plt.plot(ks, approx1, label='approx, 1 round')
-plt.title('p with gaussian approximations')
+plt.title('expectation with normal approximations')
 plt.legend()
-plt.savefig('p_test.png')
+plt.savefig('expec_test.png')
 plt.show()

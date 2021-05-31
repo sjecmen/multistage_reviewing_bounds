@@ -4,8 +4,11 @@ from load_sims import *
 import sys
 
 '''
-Plot data from the dataset split samples experiment
+Plot sampled random splits.
+Uses input from the get_split_samples or get_split_samples_score files.
+Command line arg: 'main' (random P2, results in main paper), 'supp' (random P2, results in appendix), or 'scores' (score-based P2, results in main paper)
 '''
+
 which = sys.argv[1]
 if which == 'main':
     fnames = ['iclr2018', 'preflib3', 'DA1', 'query']

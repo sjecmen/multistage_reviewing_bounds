@@ -3,16 +3,18 @@ import scipy.special
 from scipy.stats import binom
 from scipy.stats import norm
 
-'''
-Contains functions for calculating the binomial expectations used in results
-'''
+#Contains functions for calculating the binomial expectations used in results
 
-# Calculate the expectation of min(X/l, 1), X ~ Binom(n, p)
+'''
+Calculate the expectation of min(X/l, 1), X ~ Binom(n, p)
+'''
 def fraction(n, p, l):
     x = np.arange(0, n + 1)
     return np.sum(binom.pmf(x, n, p) * np.minimum(x/l, 1))
 
-# Calculate the gaussian approximation to the above expectation
+'''
+Calculate the normal approximation to the above expectation
+'''
 def fraction_approx(n, p, l):
     q = 1 - p
     t1 = np.sqrt(q / (2 * np.pi * n * p))

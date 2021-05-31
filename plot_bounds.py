@@ -6,8 +6,9 @@ import sys
 from scipy.stats import sem
 
 ''' 
-Plots bounds for both the 2 round and 1 round in-expectation bounds. 
+Plots bounds for Thm 6 and 7.
 Uses input from the scale_up_assignment, scale_up_assignment_without_21, and get_expected_split_value files if available. 
+Command line arg: name of dataset
 '''
 
 fname = sys.argv[1]

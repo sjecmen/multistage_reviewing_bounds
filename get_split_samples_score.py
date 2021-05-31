@@ -4,11 +4,11 @@ import string
 from LP import *
 
 '''
-Gets samples of random split value based on the scores of ICLR papers
+Fixes stage-two paper sets from ICLR based on scores, and calculates the value of optimum and of several samples of random reviewer split.
 '''
 
 second_round_fracs = [0.1, 0.5]
-# 'top' or 'mid'
+# 'top' or 'mid', indicating top-scoring papers or messy-middle papers
 part = 'mid'
 
 
@@ -95,7 +95,6 @@ for portion in second_round_fracs:
     print(len(P2))
     assert(len(P2) == int(portion * S.shape[1]))
 
-    #v, v_opt = split_assignment(S, M, revload, papload, threshold[2], second_round_paper_set)
     v_opt = opt_assignment_with_papers(S, M, revload, papload, P2)
     print('opt', v_opt)
     opt_results[portion].append(v_opt)

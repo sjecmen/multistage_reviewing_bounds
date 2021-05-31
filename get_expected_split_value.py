@@ -3,10 +3,10 @@ from LP import *
 from load_sims import *
 
 '''
-Estimates the expected value of random split with 1 review on each paper in each stage (with reviewer loads scaled up if necessary) and saves data.
+Estimates the expected value of random split with 1 review on each paper in each stage (with reviewer loads scaled up if necessary).
 '''
 
-fname = 'query'
+fname = 'iclr2018'
 
 S, M = load_sims('datasets/'+fname)
 S, revscale = scale_reviewers(S)

@@ -3,11 +3,11 @@ from LP import *
 from load_sims import *
 
 '''
-Gets the value of the (2k, k)-load assignment after removing the optimal (2, 1)-load assignment and saves it.
-Used in the 2-round lower bound.
+Gets the value of the (k, 2k)-load assignment after removing the optimal (1, 2)-load assignment.
+Used in the Theorem 7 bound.
 '''
 
-fname = 'DA1'
+fname = 'iclr2018'
 nk = 20
 
 S, M = load_sims('datasets/'+fname)

@@ -5,7 +5,7 @@ from gurobipy import GRB
 rng = np.random.default_rng()
 
 '''
-Calculate optimum assignment
+Calculate maximum-similarity assignment and return value
     S : similarity matrix
     M : conflict matrix
     revloads : vector or int of reviewer load limits
@@ -68,14 +68,6 @@ def match(S, M, revloads, paploads):
 
     return model.objVal, B 
 
-# Calculate value of an assignment A
-def comp_value(S, A):
-    v = 0
-    for i in range(S.shape[0]):
-        for j in range(S.shape[1]):
-            v += S[i, j] * A[i][j]
-    return v
-
 '''
 Calculate value of a random split and of the optimum for that paper sample
     S : similarity matrix
@@ -94,11 +86,15 @@ def split_assignment(S, M, revload, papload, c, opt=True):
     x_split = split_assignment_with_papers(S, M, revload, papload, P2)
     return x_split, x_opt
 
-# Sample cn of the n papers
+'''
+Sample cn of the n papers
+'''
 def sample_second_stage_papers(n, c):
     return rng.choice(n, int(c * n), replace=False)
 
-# Calculate the optimal value for a given stage 2 paper set
+'''
+Calculate the optimal value for a given stage two paper set P2
+'''
 def opt_assignment_with_papers(S, M, revload, papload, P2):
     opt_paper_loads = np.full((S.shape[1]), papload)
     for p in P2:
@@ -107,7 +103,9 @@ def opt_assignment_with_papers(S, M, revload, papload, P2):
     opt_val, _ = match(S, M, revload, opt_paper_loads)
     return opt_val
 
-# Sample the random split value for a given stage 2 paper set
+'''
+Sample the random split value for a given stage two paper set P2
+'''
 def split_assignment_with_papers(S, M, revload, papload, P2):
     c = len(P2) / S.shape[1]
 

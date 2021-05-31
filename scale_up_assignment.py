@@ -3,11 +3,11 @@ from LP import *
 from load_sims import *
 
 '''
-Gets the value of the optimal (2k, k)-load assignment and saves it.
-Used in the one-round assignment lower bound.
+Gets the value of the optimal (k, 2k)-load assignment.
+Used in the Theorem 6 bound.
 '''
 
-fname = 'DA1'
+fname = 'iclr2018'
 nk = 20
 
 S, M = load_sims('datasets/'+fname)

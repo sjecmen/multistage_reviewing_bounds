@@ -7,10 +7,10 @@ scale_up_assignment_without_21.py - computes assignment values for Theorem 7 bou
 get_expected_split_value.py - computes random split expected value
 plot_bounds.py - plots the results (bounds)
 
-bounds.py - functions to compute the bounds
 load_sims.py - functions to load similarities
-LP.py - functions to compute assignment and related things 
-p_test.py - plots some results of the approximations on p and verifies that they are lower bounds
+LP.py - functions to compute assignments and take random splits
+bounds.py - functions to compute bounds
+expec_test.py - verifies that normal approximations used in bounds are actually lower bounds
 
 datasets/ - contains the similarity matrices used
 Sources:
