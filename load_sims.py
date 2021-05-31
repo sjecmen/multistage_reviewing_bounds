@@ -1,5 +1,6 @@
 import numpy as np
 
+# Load similarity and conflicts, setting conflicted similarities to 0
 def load_sims(fname):
     d = np.load(fname + '.npz')
     S = d['similarity_matrix']

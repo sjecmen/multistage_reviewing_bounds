@@ -4,6 +4,13 @@ from gurobipy import GRB
 
 rng = np.random.default_rng()
 
+'''
+Calculate optimum assignment
+    S : similarity matrix
+    M : conflict matrix
+    revloads : vector or int of reviewer load limits
+    paploads : vector or int of paper load requirements
+'''
 def match(S, M, revloads, paploads):
     if type(revloads) == int:
         revloads = np.full(S.shape[0], revloads)
@@ -61,6 +68,7 @@ def match(S, M, revloads, paploads):
 
     return model.objVal, B 
 
+# Calculate value of an assignment A
 def comp_value(S, A):
     v = 0
     for i in range(S.shape[0]):
@@ -68,9 +76,16 @@ def comp_value(S, A):
             v += S[i, j] * A[i][j]
     return v
 
-# only calculate opt if true
+'''
+Calculate value of a random split and of the optimum for that paper sample
+    S : similarity matrix
+    M : conflict matrix
+    revload : reviewer load in each stage
+    papload : paper load in each stage
+    c : fraction of stage two papers
+    opt : True if optimum should be calculated
+'''
 def split_assignment(S, M, revload, papload, c, opt=True):
-    # k is the revload, l is papload IN EACH STAGE
     P2 = sample_second_stage_papers(S.shape[1], c)
     if opt:
         x_opt = opt_assignment_with_papers(S, M, revload, papload, P2)
@@ -79,12 +94,11 @@ def split_assignment(S, M, revload, papload, c, opt=True):
     x_split = split_assignment_with_papers(S, M, revload, papload, P2)
     return x_split, x_opt
 
-# sample cn of the n papers
+# Sample cn of the n papers
 def sample_second_stage_papers(n, c):
     return rng.choice(n, int(c * n), replace=False)
 
-
-# calculate the optimal value for a given stage 2 paper set
+# Calculate the optimal value for a given stage 2 paper set
 def opt_assignment_with_papers(S, M, revload, papload, P2):
     opt_paper_loads = np.full((S.shape[1]), papload)
     for p in P2:
@@ -93,10 +107,8 @@ def opt_assignment_with_papers(S, M, revload, papload, P2):
     opt_val, _ = match(S, M, revload, opt_paper_loads)
     return opt_val
 
-
-# sample the random split value for a given stage 2 paper set
+# Sample the random split value for a given stage 2 paper set
 def split_assignment_with_papers(S, M, revload, papload, P2):
-    # revload and papload IN EACH STAGE
     c = len(P2) / S.shape[1]
 
     revs = list(range(S.shape[0]))
@@ -112,17 +124,3 @@ def split_assignment_with_papers(S, M, revload, papload, P2):
     x1,_ = match(S1, M1, revload, papload)
     x2,_ = match(S2, M2, revload, papload)
     return x1 + x2
-
-
-# randomly remove excess reviewers
-def random_restrict(S, M, revload, papload):
-    # remove random extra reviewers first
-    # want #paps * papload * 2 = #revs * revload
-    revs = list(range(S.shape[0]))
-    revs_needed = int(np.ceil((S.shape[1] * papload) / revload))
-    rng.shuffle(revs) 
-    R1 = revs[:revs_needed]
-    S1 = S[R1, :]
-    M1 = M[R1, :]
-    print(S1.shape)
-    return S1, M1
