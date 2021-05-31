@@ -4,13 +4,11 @@ from load_sims import *
 
 '''
 Estimates the expected value of random split with 1 review on each paper in each stage (with reviewer loads scaled up if necessary) and saves data.
-Does not use COIs.
 '''
 
-fname = 'DA1'
+fname = 'query'
 
 S, M = load_sims('datasets/'+fname)
-print(S.shape)
 S, revscale = scale_reviewers(S)
 M = np.zeros_like(S)
 

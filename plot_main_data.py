@@ -11,17 +11,17 @@ if which == 'main':
     fnames = ['iclr2018', 'preflib3', 'DA1', 'query']
     nicefnames = ['ICLR', 'PrefLib3', 'Bid1', 'SIGIR']
     figsize=(12, 6)
-    cs = [0.1, 0.5]
+    cs = {f:[0.1, 0.5] for f in fnames}
 elif which == 'supp':
-    fnames = ['preflib1', 'preflib2', 'DA2']
-    nicefnames = ['PrefLib1', 'PrefLib2', 'Bid2']
-    figsize=(12, 6)
-    cs = [0.1, 0.5] # TODO add 0.3 for all including main plots
+    fnames = ['iclr2018', 'preflib3', 'DA1', 'query', 'preflib1', 'preflib2', 'DA2']
+    nicefnames = ['ICLR', 'PrefLib3', 'Bid1', 'SIGIR', 'PrefLib1', 'PrefLib2', 'Bid2']
+    figsize=(18, 6)
+    cs = {fnames[i]:[0.3] if i < 4 else [0.1, 0.3, 0.5] for i in range(7)}
 elif which == 'scores':
     fnames = ['score_top', 'score_mid']
     nicefnames = ['Top', 'Middle']
     figsize=(8, 6)
-    cs = [0.1, 0.5]
+    cs = {f:[0.1, 0.5] for f in fnames}
 else:
     assert(False)
 
@@ -38,7 +38,7 @@ for fname, nicefname in zip(fnames, nicefnames ):
     opt_data = d['opt_samples'][()]
     split_data = d['split_samples'][()]
 
-    for c in cs:
+    for c in cs[fname]:
         if which == 'scores':
             percents = [s/opt_data[c][0] for s in split_data[c]]
         else:
@@ -57,7 +57,7 @@ plt.tight_layout()
 plt.plot((xs, xs), (minys, maxys), '-', color='black', solid_capstyle="butt", linewidth=5)
 plt.scatter(xs, minys, 100, color='black', marker='_')
 plt.scatter(xs, maxys, 100, color='black', marker='_')
-plt.ylim(bottom=0.75, top=1)
+plt.ylim(bottom=0, top=1)
 plt.xticks(ticks=ticks, labels=labels)
 plt.ylabel('Fraction of optimal similarity', fontsize=22)
 plt.savefig(which + '_exp.pdf')

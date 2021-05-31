@@ -4,7 +4,7 @@ from scipy.stats import binom
 from scipy.stats import norm
 
 '''
-contains functions for calculating the binomial expectations used in results
+Contains functions for calculating the binomial expectations used in results
 '''
 
 # calculate the expectation of min(X/l, 1), X ~ Binom(n, p)
@@ -13,7 +13,6 @@ def fraction(n, p, l):
     return np.sum(binom.pmf(x, n, p) * np.minimum(x/l, 1))
 
 # calculate the gaussian approx to the above frac
-# quite precise, uses gaussian cdf but not pdf
 def fraction_approx(n, p, l):
     q = 1 - p
     t1 = np.sqrt(q / (2 * np.pi * n * p))

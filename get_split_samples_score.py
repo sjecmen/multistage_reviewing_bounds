@@ -3,9 +3,12 @@ import json
 import string
 from LP import *
 
+'''
+Gets samples of random split value based on the scores of ICLR papers
+'''
 
 second_round_fracs = [0.1, 0.5]
-# top or mid
+# 'top' or 'mid'
 part = 'mid'
 
 

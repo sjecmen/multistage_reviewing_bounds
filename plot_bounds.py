@@ -8,7 +8,6 @@ from scipy.stats import sem
 ''' 
 Plots bounds for both the 2 round and 1 round in-expectation bounds. 
 Uses input from the scale_up_assignment, scale_up_assignment_without_21, and get_expected_split_value files if available. 
-Assumes c=1 for both.
 '''
 
 fname = sys.argv[1]
@@ -60,11 +59,9 @@ else:
         rand_value = 0
 
 # construct bounds
-#bounds2 = two_round_bounds(ks2, value_21, vs_without, True)
 approx2 = two_round_bounds(ks2, value_21, vs_without, False)
 bestv2, bestk2 = max(zip(approx2, ks2))
 
-#bounds1 = one_round_bounds(ks1, vs, 1, True)
 approx1 = one_round_bounds(ks1, vs, 1, False)
 bestv1, bestk1 = max(zip(approx1, ks1))
 
@@ -79,21 +76,13 @@ ks = ks1 if len(ks1) > len(ks2) else ks2
 plt.rcParams.update({'font.size': fontsize})
 plt.plot(ks, [rand_value] * len(ks), label=labels[0], color=colors[0], marker=markers[0], linestyle=ls[0], linewidth=lw, ms=markersize)
 plt.fill_between(ks, [rand_value-rand_sem] * len(ks), [rand_value+rand_sem] * len(ks), color='lightblue')
-#plt.plot(ks, [rand_value-rand_sem] * len(ks), color='lightblue', marker=markers[0], ms=markersize)
-#plt.plot(ks, [rand_value+rand_sem] * len(ks), color='lightblue', marker=markers[0],  ms=markersize)
 plt.plot(ks1, approx1, label=labels[1], color=colors[1], linestyle=ls[1], marker=markers[1], linewidth=lw, ms=markersize)
 plt.plot(ks2, approx2, label=labels[2], color=colors[2], linestyle=ls[2], marker=markers[2], linewidth=lw, ms=markersize)
-#plt.plot(ks2, vs_without, label='mean (2k, k) value without assignments in (2, 1)')
-#plt.plot(ks1, vs, label='mean (2k, k) value', color='lightblue')
-#plt.plot(ks2, bounds2, label='bound, 2 round', color='pink')
-#plt.plot(ks1, bounds1, label='bound, 1 round', color='gold')
-#plt.plot(ks, [value_21] * len(ks), label='actual optimal value', linestyle='--')
 plt.plot(bestk1, bestv1, markeredgecolor='black', marker='o', ms=markersize*3, markerfacecolor='none')
 plt.plot(bestk2, bestv2, markeredgecolor='black', marker='o', ms=markersize*3, markerfacecolor='none')
-plt.xlabel('Benchmark assignment load parameter (\u03BC)')
+plt.xlabel('Assignment load parameter \u03BC')
 plt.ylabel('Average assignment value')
 plt.ylim(bottom=0)
-#plt.legend()
 plt.tight_layout()
 plt.savefig('bounds_' + fname + '.pdf')
 plt.show()
