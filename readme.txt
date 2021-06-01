@@ -2,8 +2,8 @@ get_split_samples.py - takes samples of random split and the ex-post optimum spl
 get_split_samples_score.py - takes samples of random split with stage-two papers chosen by score
 plot_main_data.py - plots the results (random split samples)
 
-scale_up_assignment.py - computes assignment values for Theorem 6 bound
-scale_up_assignment_without_21.py - computes assignment values for Theorem 7 bound
+scale_up_assignment.py - computes assignment values for Theorem 5 bound
+scale_up_assignment_without_21.py - computes assignment values for Theorem 6 bound
 get_expected_split_value.py - computes random split expected value
 plot_bounds.py - plots the results (bounds)
 

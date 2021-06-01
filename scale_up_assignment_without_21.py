@@ -4,7 +4,7 @@ from load_sims import *
 
 '''
 Gets the value of the (k, 2k)-load assignment after removing the optimal (1, 2)-load assignment.
-Used in the Theorem 7 bound.
+Used in the Theorem 6 bound.
 '''
 
 fname = 'iclr2018'

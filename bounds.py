@@ -26,7 +26,7 @@ def fraction_approx(n, p, l):
     return 1 - t1 - t2
 
 '''
-Constant in the Theorem 6 bound
+Constant in the Theorem 5 bound
     k : load of assignment on (R, P)
     c : fraction of papers in stage two
     exact : whether to use exact expectation or approximation
@@ -43,7 +43,7 @@ def p_one_round(k, c, exact):
     return (k / np.ceil((1 + c) * k)) * (e1 + t) 
 
 '''
-Calculate Theorem 6 bounds
+Calculate Theorem 5 bounds
     ks : vector, loads of assignments on (R, P)
     vs : vector, values of the opt assignments with l_r = k, l_p = (1+c)k
     c : fraction of papers in stage two
@@ -57,7 +57,7 @@ def one_round_bounds(ks, vs, c, exact):
     return bds
 
 '''
-Constant in the Theorem 7 bound
+Constant in the Theorem 6 bound
     k : load of assignment on (R, P)
     exact : whether to use exact expectation or approximation
 '''
@@ -72,7 +72,7 @@ def p_two_round(k, exact):
     return e1 + e2 - ((k/4)/l)
 
 '''
-Calculate Theorem 7 bounds
+Calculate Theorem 6 bounds
     ks : vector, loads of assignments on (R, P)
     value_21 : value of the opt assignment with l_r = 1, l_p = 2
     vs_without : vector, values of the opt assignments with l_r = k, l_p = (1+c)k, disjoint from the value_21 assignment

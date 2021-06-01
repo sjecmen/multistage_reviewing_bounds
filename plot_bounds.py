@@ -6,7 +6,7 @@ import sys
 from scipy.stats import sem
 
 ''' 
-Plots bounds for Thm 6 and 7.
+Plots bounds for Thm 5 and 6.
 Uses input from the scale_up_assignment, scale_up_assignment_without_21, and get_expected_split_value files if available. 
 Command line arg: name of dataset
 '''
@@ -19,7 +19,7 @@ markersize=10
 lw=3
 colors = ['blue', 'red', 'orange']
 ls = ['dashed', 'solid', 'solid']
-labels = ['Random split expectation', 'Theorem 6 bound', 'Theorem 7 bound']
+labels = ['Random split expectation', 'Theorem 5 bound', 'Theorem 6 bound']
 markers = ["", "s", "^"]
 
 if fname=='legend':
