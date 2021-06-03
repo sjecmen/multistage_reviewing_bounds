@@ -16,5 +16,5 @@ datasets/ - contains the similarity matrices used
 Sources:
 	iclr2018.npz : https://github.com/xycforgithub/StrategyProof_Conference_Review
 	iclr2018.json : https://github.com/Chillee/OpenReviewExplorer
-	preflib*.npz : https://www.preflib.org/data/matching/csconf/ (transformed into similarities)
-	query.npz : http://sifaka.cs.uiuc.edu/ir/data/review.html (transformed into similarities)
+	preflib*.npz : https://www.preflib.org/data/matching/csconf/ (transformed into similarities using compute_preflib_similarities.py)
+	query.npz (called SIGIR in paper) : http://sifaka.cs.uiuc.edu/ir/data/review.html (transformed into similarities using compute_query_similarities.py)
