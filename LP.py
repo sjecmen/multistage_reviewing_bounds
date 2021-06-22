@@ -76,14 +76,18 @@ Calculate value of a random split and of the optimum for that paper sample
     papload : paper load in each stage
     c : fraction of stage two papers
     opt : True if optimum should be calculated
+    papersplit : True if we are in the paper-split model (papers only in one stage)
 '''
-def split_assignment(S, M, revload, papload, c, opt=True):
+def split_assignment(S, M, revload, papload, c, opt=True, papersplit=False):
     P2 = sample_second_stage_papers(S.shape[1], c)
     if opt:
-        x_opt = opt_assignment_with_papers(S, M, revload, papload, P2)
+        x_opt = opt_assignment_with_papers(S, M, revload, papload, P2, papersplit)
     else:
         x_opt = None
-    x_split = split_assignment_with_papers(S, M, revload, papload, P2)
+    if papersplit:
+        x_split = split_assignment_with_papers_split(S, M, revload, papload, P2)
+    else:
+        x_split = split_assignment_with_papers(S, M, revload, papload, P2)
     return x_split, x_opt
 
 '''
@@ -95,10 +99,11 @@ def sample_second_stage_papers(n, c):
 '''
 Calculate the optimal value for a given stage two paper set P2
 '''
-def opt_assignment_with_papers(S, M, revload, papload, P2):
+def opt_assignment_with_papers(S, M, revload, papload, P2, papersplit=False):
     opt_paper_loads = np.full((S.shape[1]), papload)
-    for p in P2:
-        opt_paper_loads[p] += papload
+    if not papersplit:
+        for p in P2:
+            opt_paper_loads[p] += papload
 
     opt_val, _ = match(S, M, revload, opt_paper_loads)
     return opt_val
@@ -118,6 +123,28 @@ def split_assignment_with_papers(S, M, revload, papload, P2):
     S1 = S[R1, :]
     S2 = S[R2, :][:, P2]
     M1 = M[R1, :]
+    M2 = M[R2, :][:, P2]
+    x1,_ = match(S1, M1, revload, papload)
+    x2,_ = match(S2, M2, revload, papload)
+    return x1 + x2
+
+'''
+Sample the random split value for a given stage two paper set P2, under paper-split model (papers in only one stage)
+'''
+def split_assignment_with_papers_split(S, M, revload, papload, P2):
+    c = len(P2) / S.shape[1]
+    P1 = [p for p in range(S.shape[1]) if p not in P2]
+    assert(len(P1) + len(P2) == S.shape[1])
+
+    revs = list(range(S.shape[0]))
+    rng.shuffle(revs)
+    splitrev = int(S.shape[0] * (1-c))
+    R1 = revs[:splitrev]
+    R2 = revs[splitrev:]
+
+    S1 = S[R1, :][:, P1]
+    S2 = S[R2, :][:, P2]
+    M1 = M[R1, :][:, P1]
     M2 = M[R2, :][:, P2]
     x1,_ = match(S1, M1, revload, papload)
     x2,_ = match(S2, M2, revload, papload)

@@ -25,6 +25,11 @@ elif which == 'scores':
     nicefnames = ['Top', 'Middle']
     figsize=(8, 6)
     cs = {f:[0.1, 0.5] for f in fnames}
+elif which == 'papersplit':
+    fnames = ['iclr2018_papersplit', 'preflib3_papersplit', 'DA1_papersplit', 'query_papersplit']
+    nicefnames = ['ICLR', 'PrefLib3', 'Bid1', 'SIGIR']
+    figsize=(8, 6)
+    cs = {f:[0.5] for f in fnames}
 else:
     assert(False)
 
@@ -50,7 +55,10 @@ for fname, nicefname in zip(fnames, nicefnames ):
         minys.append(min(percents))
         maxys.append(max(percents))
         ticks.append(idx)
-        labels.append(nicefname + '\n\u03B2=' + str(c))
+        if which == 'papersplit':
+            labels.append(nicefname)
+        else:
+            labels.append(nicefname + '\n\u03B2=' + str(c))
         idx += 1 
 
 print(minys)
