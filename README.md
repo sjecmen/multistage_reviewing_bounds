@@ -1,3 +1,9 @@
+# 
+
+Code for multi-stage reviewing TODO update with arxiv link
+
+
+
 get_split_samples.py - takes samples of random split and the ex-post optimum split
 get_split_samples_score.py - takes samples of random split with stage-two papers chosen by score
 plot_main_data.py - plots the results (random split samples)
