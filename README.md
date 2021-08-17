@@ -1,6 +1,6 @@
 # Random Reviewer Splitting in Two-Stage Paper Assignment
 
-Code to run simulations of random reviewer splits in two-stage paper assignment and calculate bounds. See the corresponding paper [here](TODO).
+Code to run simulations of random reviewer splits in two-stage paper assignment and calculate bounds. See the corresponding paper [here](https://arxiv.org/abs/2108.06371).
 
 ## Files 
 - get_split_samples.py - takes samples of random split and the ex-post optimum split
